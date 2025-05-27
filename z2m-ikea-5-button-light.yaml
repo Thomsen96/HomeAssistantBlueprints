@@ -96,13 +96,13 @@ trigger:
     domain: mqtt
     type: action
     subtype: brightness_down_hold
-    id: dim_down
+    id: dim_down_hold
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
     type: action
     subtype: brightness_up_hold
-    id: dim_up
+    id: dim_up_hold
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
@@ -115,6 +115,18 @@ trigger:
     type: action
     subtype: brightness_up_release
     id: dim_stop
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
+    subtype: brightness_down_click
+    id: dim_down_click
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
+    subtype: brightness_up_click
+    id: dim_up_click
 
 variables:
   light_entity: !input light_entity
@@ -179,9 +191,29 @@ action:
               until:
                 - condition: trigger
                   id: change_color_right_release
+
       - conditions:
           - condition: trigger
-            id: dim_down
+            id: dim_down_click
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input light_entity
+            data:
+              brightness_step_pct: "-{{ brightness_step | int(5) }}"
+      - conditions:
+          - condition: trigger
+            id: dim_up_click
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input light_entity
+            data:
+              brightness_step_pct: "{{ brightness_step | int(5) }}"
+
+      - conditions:
+          - condition: trigger
+            id: dim_down_hold
         sequence:
           - repeat:
               sequence:
@@ -198,7 +230,7 @@ action:
                   id: dim_stop
       - conditions:
           - condition: trigger
-            id: dim_up
+            id: dim_up_hold
         sequence:
           - repeat:
               sequence:
