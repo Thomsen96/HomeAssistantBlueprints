@@ -95,19 +95,25 @@ trigger:
     device_id: !input mqtt_device
     domain: mqtt
     type: action
-    subtype: brightness_move_down
+    subtype: brightness_down_hold
     id: dim_down
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
     type: action
-    subtype: brightness_move_up
+    subtype: brightness_up_hold
     id: dim_up
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
     type: action
-    subtype: brightness_stop
+    subtype: brightness_down_release
+    id: dim_stop
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
+    subtype: brightness_up_release
     id: dim_stop
 
 variables:
