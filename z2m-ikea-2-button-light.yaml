@@ -71,13 +71,13 @@ trigger:
     device_id: !input mqtt_device
     domain: mqtt
     type: action
-    subtype: off
+    subtype: "off"
     id: dim_down_click
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
     type: action
-    subtype: on
+    subtype: "on"
     id: dim_up_click
 
 variables:
